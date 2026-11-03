@@ -1,0 +1,349 @@
+{
+  "run": {
+    "D": "2026-11-03",
+    "created_at": "2026-11-03T16:03:27+00:00",
+    "history_start": "2019-01-01T00",
+    "history_end": "2026-10-31T23",
+    "interchange_start": "2023-01-01T00"
+  },
+  "routes": [
+    {
+      "route": "electricity/rto/region-data",
+      "name": "Hourly Demand, Demand Forecast, Generation, and Interchange",
+      "frequency": [
+        "hourly",
+        "local-hourly"
+      ],
+      "facets": {
+        "respondent": 83,
+        "type": 4
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01T00",
+      "endPeriod": "2026-11-04T08",
+      "defaultFrequency": "hourly"
+    },
+    {
+      "route": "electricity/rto/fuel-type-data",
+      "name": "Hourly Generation by Energy Source",
+      "frequency": [
+        "hourly",
+        "local-hourly"
+      ],
+      "facets": {
+        "respondent": 83,
+        "fueltype": 20
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01T00",
+      "endPeriod": "2026-11-03T07",
+      "defaultFrequency": "hourly"
+    },
+    {
+      "route": "electricity/rto/region-sub-ba-data",
+      "name": "Hourly Demand by Subregion",
+      "frequency": [
+        "hourly",
+        "local-hourly"
+      ],
+      "facets": {
+        "subba": 90,
+        "parent": 10
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01T00",
+      "endPeriod": "2026-11-03T08",
+      "defaultFrequency": "hourly"
+    },
+    {
+      "route": "electricity/rto/interchange-data",
+      "name": "Hourly Interchange by Neighboring Balancing Authority",
+      "frequency": [
+        "hourly",
+        "local-hourly"
+      ],
+      "facets": {
+        "fromba": 83,
+        "toba": 92
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01T00",
+      "endPeriod": "2026-11-02T08",
+      "defaultFrequency": "hourly"
+    },
+    {
+      "route": "electricity/rto/daily-region-data",
+      "name": "Daily Demand, Demand Forecast, Generation, and Interchange",
+      "frequency": [
+        "daily"
+      ],
+      "facets": {
+        "respondent": 83,
+        "type": 4,
+        "timezone": 5
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01",
+      "endPeriod": "2026-11-03",
+      "defaultFrequency": "daily"
+    },
+    {
+      "route": "electricity/rto/daily-region-sub-ba-data",
+      "name": "Daily Demand by Subregion",
+      "frequency": [
+        "daily"
+      ],
+      "facets": {
+        "subba": 90,
+        "parent": 10,
+        "timezone": 5
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01",
+      "endPeriod": "2026-11-02",
+      "defaultFrequency": "daily"
+    },
+    {
+      "route": "electricity/rto/daily-fuel-type-data",
+      "name": "Daily Generation by Energy Source",
+      "frequency": [
+        "daily"
+      ],
+      "facets": {
+        "respondent": 83,
+        "fueltype": 20,
+        "timezone": 5
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01",
+      "endPeriod": "2026-11-02",
+      "defaultFrequency": "daily"
+    },
+    {
+      "route": "electricity/rto/daily-interchange-data",
+      "name": "Daily Interchange by Neighboring Balancing Authority",
+      "frequency": [
+        "daily"
+      ],
+      "facets": {
+        "fromba": 83,
+        "toba": 93,
+        "timezone": 5
+      },
+      "data_columns": [
+        "value"
+      ],
+      "startPeriod": "2019-01-01",
+      "endPeriod": "2026-11-01",
+      "defaultFrequency": "daily"
+    }
+  ],
+  "region_existence": {
+    "CISO": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    },
+    "ERCO": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    },
+    "PJM": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    },
+    "MISO": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    },
+    "NYIS": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    },
+    "ISNE": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    },
+    "SWPP": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    },
+    "US48": {
+      "region-data": true,
+      "fuel-type-data": true,
+      "interchange-data": true
+    }
+  },
+  "agg13_exist": {
+    "CAL": true,
+    "CAR": true,
+    "CENT": true,
+    "FLA": true,
+    "MIDA": true,
+    "MIDW": true,
+    "NE": true,
+    "NY": true,
+    "NW": true,
+    "SE": true,
+    "SW": true,
+    "TEN": true,
+    "TEX": true
+  },
+  "row_limit_probe": {
+    "status": 200,
+    "rows_returned": 5000,
+    "total": "8691",
+    "warnings": null,
+    "headers": {}
+  },
+  "sample_rows": [
+    {
+      "period": "2024-03-31T23",
+      "respondent": "PJM",
+      "respondent-name": "PJM Interconnection, LLC",
+      "type": "D",
+      "type-name": "Demand",
+      "value": "73567",
+      "value-units": "megawatthours"
+    },
+    {
+      "period": "2024-03-31T23",
+      "respondent": "PJM",
+      "respondent-name": "PJM Interconnection, LLC",
+      "type": "DF",
+      "type-name": "Day-ahead demand forecast",
+      "value": "80330",
+      "value-units": "megawatthours"
+    },
+    {
+      "period": "2024-03-31T23",
+      "respondent": "PJM",
+      "respondent-name": "PJM Interconnection, LLC",
+      "type": "NG",
+      "type-name": "Net generation",
+      "value": "78823",
+      "value-units": "megawatthours"
+    }
+  ],
+  "fueltypes": [
+    {
+      "id": "OTH",
+      "name": "Other"
+    },
+    {
+      "id": "PS",
+      "name": "Pumped storage"
+    },
+    {
+      "id": "SNB",
+      "name": "Solar Battery"
+    },
+    {
+      "id": "UES",
+      "name": "Unknown Energy"
+    },
+    {
+      "id": "PS",
+      "name": "Pumped Storage"
+    },
+    {
+      "id": "OIL",
+      "name": "Petroleum"
+    },
+    {
+      "id": "WAT",
+      "name": "Hydro"
+    },
+    {
+      "id": "SNB",
+      "name": "Solar with integrated battery storage"
+    },
+    {
+      "id": "BAT",
+      "name": "Battery"
+    },
+    {
+      "id": "COL",
+      "name": "Coal"
+    },
+    {
+      "id": "WNB",
+      "name": "Wind with integrated battery storage"
+    },
+    {
+      "id": "SUN",
+      "name": "Solar"
+    },
+    {
+      "id": "UNK",
+      "name": "Unknown"
+    },
+    {
+      "id": "UES",
+      "name": "Unknown energy storage"
+    },
+    {
+      "id": "NUC",
+      "name": "Nuclear"
+    },
+    {
+      "id": "BAT",
+      "name": "Battery storage"
+    },
+    {
+      "id": "NG",
+      "name": "Natural Gas"
+    },
+    {
+      "id": "GEO",
+      "name": "Geothermal"
+    },
+    {
+      "id": "OES",
+      "name": "Other energy storage"
+    },
+    {
+      "id": "WND",
+      "name": "Wind"
+    }
+  ],
+  "region_types": [
+    {
+      "id": "TI",
+      "name": "Total interchange"
+    },
+    {
+      "id": "D",
+      "name": "Demand"
+    },
+    {
+      "id": "NG",
+      "name": "Net generation"
+    },
+    {
+      "id": "DF",
+      "name": "Day-ahead demand forecast"
+    }
+  ],
+  "requests": 30
+}

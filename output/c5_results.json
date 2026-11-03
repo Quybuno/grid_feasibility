@@ -1,0 +1,57 @@
+{
+  "criteria": {
+    "hourly_update_s_max": {
+      "value": 9.53,
+      "threshold": "<= 300 s",
+      "pass": true
+    },
+    "daily_update_s": {
+      "value": 626.0,
+      "threshold": "<= 1800 s",
+      "pass": true
+    },
+    "dashboard_tables_bytes": {
+      "value": 29664751,
+      "threshold": "<= 5 GB",
+      "pass": true
+    }
+  },
+  "backfill_sessions": [
+    {
+      "started": "2026-11-03T16:11:32.389306+00:00",
+      "elapsed_s": 1158.0,
+      "chunks_done": 1690,
+      "requests": 3027,
+      "fails": []
+    }
+  ],
+  "backfill_requests_eia": 3027,
+  "backfill_elapsed_s": 1158.0,
+  "snapshot_runs": 2,
+  "snapshot_requests": 6,
+  "storage_total_bytes": 367670132,
+  "storage_raw_bytes": 74414084,
+  "storage_parquet_bytes": 114841838,
+  "mart_bytes": 29664751,
+  "peak_rss_analyze_bytes": 3313360896,
+  "daily": {
+    "window": [
+      "2026-10-25T00",
+      "2026-10-31T23"
+    ],
+    "rows": {
+      "region": 5360,
+      "fuel": 12720,
+      "agg13": 2184,
+      "ic_fromba": 7527,
+      "ic_toba": 6265
+    },
+    "requests": 11,
+    "weather_status": 200,
+    "t_eia_s": 16.8,
+    "t_weather_s": 1.6,
+    "t_build_s": 513.2,
+    "t_analyze_s": 94.4,
+    "total_s": 626.0
+  }
+}

@@ -1,0 +1,47 @@
+{
+ "region-data": {
+  "CISO": true,
+  "ERCO": true,
+  "PJM": true,
+  "MISO": true,
+  "NYIS": true,
+  "ISNE": true,
+  "SWPP": true,
+  "US48": true
+ },
+ "fuel-type-data": {
+  "CISO": true,
+  "ERCO": true,
+  "PJM": true,
+  "MISO": true,
+  "NYIS": true,
+  "ISNE": true,
+  "SWPP": true,
+  "US48": true
+ },
+ "interchange-data": {
+  "CISO": true,
+  "ERCO": true,
+  "PJM": true,
+  "MISO": true,
+  "NYIS": true,
+  "ISNE": true,
+  "SWPP": true,
+  "US48": true
+ },
+ "agg13": {
+  "CAL": true,
+  "CAR": true,
+  "CENT": true,
+  "FLA": true,
+  "MIDA": true,
+  "MIDW": true,
+  "NE": true,
+  "NY": true,
+  "NW": true,
+  "SE": true,
+  "SW": true,
+  "TEN": true,
+  "TEX": true
+ }
+}

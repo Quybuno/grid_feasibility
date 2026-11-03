@@ -1,0 +1,91 @@
+# KHÓA TRƯỚC KHI LẤY DỮ LIỆU — locked 2026-11-03 (UTC) before any data request.
+# Không tự thay mã khác sau khi xem dữ liệu. Mã không tồn tại sẽ được ghi vào report.
+#
+# Nguồn trọng số dân số: U.S. Census Bureau, 2020 Decennial Census, dân số "incorporated place"
+# (city proper), bảng P1 (Total Population), https://data.census.gov/ . Trọng số = dân số thành phố /
+# tổng dân số các thành phố được khóa của vùng (chuẩn hóa trong vùng). Không tái chuẩn hóa khi thiếu
+# một thành phố: giờ thiếu bất kỳ thành phố nào => nhiệt độ vùng giờ đó = thiếu (C4 rule).
+# Tọa độ: tọa độ trung tâm thành phố (WGS84) theo USGS GNIS, làm tròn 4 chữ số.
+# Lựa chọn thành phố: các thành phố lớn nằm trong vùng phục vụ của BA. Los Angeles bị loại khỏi CISO
+# vì LADWP là BA riêng; El Paso loại khỏi ERCO (không thuộc ERCOT); Memphis loại khỏi MISO (TVA).
+# Múi giờ địa phương dùng cho cột giờ địa phương (IANA, xử lý DST bằng zoneinfo).
+
+census_source: "U.S. Census Bureau, 2020 Census, P1 Total Population, incorporated places (data.census.gov)"
+coordinate_source: "USGS GNIS city centroid (rounded to 4 decimals)"
+
+regions:
+  CISO:
+    name: California ISO
+    tz: America/Los_Angeles
+    cities:
+      - {name: San Diego,     lat: 32.7157, lon: -117.1611, pop2020: 1386932}
+      - {name: San Jose,      lat: 37.3382, lon: -121.8863, pop2020: 1013240}
+      - {name: San Francisco, lat: 37.7749, lon: -122.4194, pop2020: 873965}
+      - {name: Fresno,        lat: 36.7378, lon: -119.7871, pop2020: 542107}
+      - {name: Long Beach,    lat: 33.7701, lon: -118.1937, pop2020: 466742}
+  ERCO:
+    name: ERCOT
+    tz: America/Chicago
+    cities:
+      - {name: Houston,     lat: 29.7604, lon: -95.3698, pop2020: 2304580}
+      - {name: San Antonio, lat: 29.4241, lon: -98.4936, pop2020: 1434625}
+      - {name: Dallas,      lat: 32.7767, lon: -96.7970, pop2020: 1304379}
+      - {name: Austin,      lat: 30.2672, lon: -97.7431, pop2020: 961855}
+      - {name: Fort Worth,  lat: 32.7555, lon: -97.3308, pop2020: 918915}
+  PJM:
+    name: PJM Interconnection
+    tz: America/New_York
+    cities:
+      - {name: Chicago,      lat: 41.8781, lon: -87.6298, pop2020: 2746388}
+      - {name: Philadelphia, lat: 39.9526, lon: -75.1652, pop2020: 1603797}
+      - {name: Columbus,     lat: 39.9612, lon: -82.9988, pop2020: 905748}
+      - {name: Washington,   lat: 38.9072, lon: -77.0369, pop2020: 689545}
+      - {name: Baltimore,    lat: 39.2904, lon: -76.6122, pop2020: 585708}
+  MISO:
+    name: Midcontinent ISO
+    tz: America/Chicago
+    cities:
+      - {name: Indianapolis, lat: 39.7684, lon: -86.1581, pop2020: 887642}
+      - {name: Detroit,      lat: 42.3314, lon: -83.0458, pop2020: 639111}
+      - {name: Minneapolis,  lat: 44.9778, lon: -93.2650, pop2020: 429954}
+      - {name: New Orleans,  lat: 29.9511, lon: -90.0715, pop2020: 383997}
+      - {name: St. Louis,    lat: 38.6270, lon: -90.1994, pop2020: 301578}
+  NYIS:
+    name: New York ISO
+    tz: America/New_York
+    cities:
+      - {name: New York City, lat: 40.7128, lon: -74.0060, pop2020: 8804190}
+      - {name: Buffalo,       lat: 42.8864, lon: -78.8784, pop2020: 278349}
+      - {name: Rochester,     lat: 43.1566, lon: -77.6088, pop2020: 211328}
+      - {name: Syracuse,      lat: 43.0481, lon: -76.1474, pop2020: 148620}
+      - {name: Albany,        lat: 42.6526, lon: -73.7562, pop2020: 99224}
+  ISNE:
+    name: ISO New England
+    tz: America/New_York
+    cities:
+      - {name: Boston,          lat: 42.3601, lon: -71.0589, pop2020: 675647}
+      - {name: Worcester,       lat: 42.2626, lon: -71.8023, pop2020: 206518}
+      - {name: Providence,      lat: 41.8240, lon: -71.4128, pop2020: 190934}
+      - {name: Springfield MA,  lat: 42.1015, lon: -72.5898, pop2020: 155929}
+      - {name: Bridgeport,      lat: 41.1865, lon: -73.1952, pop2020: 148654}
+  SWPP:
+    name: Southwest Power Pool
+    tz: America/Chicago
+    cities:
+      - {name: Oklahoma City, lat: 35.4676, lon: -97.5164, pop2020: 681054}
+      - {name: Kansas City,   lat: 39.0997, lon: -94.5786, pop2020: 508090}
+      - {name: Omaha,         lat: 41.2565, lon: -95.9345, pop2020: 486051}
+      - {name: Tulsa,         lat: 36.1540, lon: -95.9928, pop2020: 413066}
+      - {name: Wichita,       lat: 37.6872, lon: -97.3301, pop2020: 397532}
+  US48:
+    name: United States Lower 48 (chỉ dùng nếu API có)
+    tz: America/New_York
+    optional: true
+    note: "Đại diện bằng 5 thành phố đông dân nhất Hoa Kỳ (2020 Census)."
+    cities:
+      - {name: New York City, lat: 40.7128, lon: -74.0060,  pop2020: 8804190}
+      - {name: Los Angeles,   lat: 34.0522, lon: -118.2437, pop2020: 3898747}
+      - {name: Chicago,       lat: 41.8781, lon: -87.6298,  pop2020: 2746388}
+      - {name: Houston,       lat: 29.7604, lon: -95.3698,  pop2020: 2304580}
+      - {name: Phoenix,       lat: 33.4484, lon: -112.0740, pop2020: 1608139}
+

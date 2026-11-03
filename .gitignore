@@ -1,0 +1,17 @@
+# Environment and keys
+.env
+*.key
+
+# Data & caches (dữ liệu lớn và kết quả chạy máy local)
+data/
+store/
+logs/
+review/
+__pycache__/
+*.pyc
+
+# IDE & system
+.vscode/
+.idea/
+*.tmp
+

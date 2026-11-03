@@ -1,0 +1,17 @@
+2026-11-03T16:05:11+00:00 meta electricity/rto -> 200 in 1.57s
+2026-11-03T16:05:11+00:00 meta electricity/rto/region-data -> 200 in 0.25s
+2026-11-03T16:05:12+00:00 meta electricity/rto/fuel-type-data -> 200 in 0.43s
+2026-11-03T16:05:13+00:00 meta electricity/rto/region-sub-ba-data -> 200 in 0.27s
+2026-11-03T16:05:15+00:00 meta electricity/rto/interchange-data -> 200 in 0.53s
+2026-11-03T16:05:17+00:00 meta electricity/rto/daily-region-data -> 200 in 0.27s
+2026-11-03T16:05:19+00:00 meta electricity/rto/daily-region-sub-ba-data -> 200 in 0.27s
+2026-11-03T16:05:22+00:00 meta electricity/rto/daily-fuel-type-data -> 200 in 0.31s
+2026-11-03T16:05:26+00:00 meta electricity/rto/daily-interchange-data -> 200 in 0.61s
+2026-11-03T16:33:35+00:00 region_raw: 2194585 rows
+2026-11-03T16:37:35+00:00 fuel_raw: 4468027 rows
+2026-11-03T16:37:43+00:00 agg13_raw: 892631 rows
+2026-11-03T16:39:27+00:00 interchange_raw: 2709525 rows
+2026-11-03T16:44:06+00:00 region_raw: 2194585 rows
+2026-11-03T16:48:27+00:00 fuel_raw: 4468027 rows
+2026-11-03T16:48:35+00:00 agg13_raw: 892631 rows
+2026-11-03T16:50:21+00:00 interchange_raw: 2709525 rows

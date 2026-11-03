@@ -1,0 +1,104 @@
+# KHÓA TRƯỚC KHI LẤY DỮ LIỆU — định nghĩa phân tích & ngưỡng (locked 2026-11-03 UTC).
+# Không đổi ngưỡng/định nghĩa sau khi thấy kết quả.
+
+period:
+  D: "ngày chạy theo UTC, ghi cố định tại state/run_state.json ở lần chạy đầu; chạy lại dùng lại D cũ"
+  history_start: "2019-01-01T00"       # UTC
+  history_end: "D-3 23:00 UTC (bao gồm)"
+  interchange_start: "2023-01-01T00"
+  timestamp_convention: "giữ nguyên trường period của EIA (frequency=hourly, UTC); không dịch giờ"
+
+C1:
+  core_types: [D, DF, NG]
+  core_min_hours_share: 0.98       # mọi vùng
+  fuel_min_hours_share: 0.95       # ít nhất 5 vùng
+  fuel_min_regions: 5
+  demand_max_gap_hours: 72
+  max_dup_key_share: 0.001
+  fuel_hour_definition: "giờ có >=1 giá trị fueltype không null cho vùng"
+  TI_reported: "đo nhưng không thuộc tiêu chí"
+
+C2:
+  runs: 72
+  window_hours: 72                 # start = now-72h, không đặt end (gồm cả giờ tương lai của DF)
+  min_success_share: 0.95
+  demand_latency_median_max_h: 3
+  demand_latency_p95_max_h: 12
+  fuel_latency_p95_max_h: 48
+  revision_threshold: 0.01
+  max_revised_share: 0.05
+  latency_definition: >
+    latency = fetched_at lần đầu thấy giá trị không null - period (UTC, như EIA trả về).
+    Chỉ tính các giờ có period > fetched_at của snapshot đầu tiên (giờ xuất hiện mới, tránh kiểm duyệt trái).
+  revision_definition: "|v_sau - v_đầu| / max(|v_đầu|,1) > 1% ở bất kỳ snapshot sau; tỷ lệ trên số khóa thấy >=2 lần"
+  success_definition: "mọi request trong lần chạy trả HTTP 200 và parse được"
+
+C4:
+  min_hours_share: 0.99
+  temperature_source: "Open-Meteo Historical Weather API (archive-api.open-meteo.com), temperature_2m, timezone=GMT"
+  alignment_checks:
+    - "timestamps Open-Meteo parse thành UTC, liên tục theo giờ, không trùng"
+    - "ghép 1:1 với khóa giờ UTC của EIA (không có giờ ghép nhiều dòng)"
+    - "trung vị giờ địa phương của nhiệt độ cực đại ngày nằm trong [12,18] ở mọi vùng"
+
+Q1:
+  net_load: "D - WND - SUN, chỉ giờ có cả D, WND, SUN không null (không điền 0)"
+  seasons: {DJF: [12,1,2], MAM: [3,4,5], JJA: [6,7,8], SON: [9,10,11]}
+  metrics:
+    midday_depth: "max(NL giờ địa phương 6..9) - min(NL giờ 10..15) trên hồ sơ"
+    afternoon_ramp: "max_{h in 13..17} (NL[h+3]-NL[h])/3, MW/h"
+    evening_peak: "max(NL giờ 17..21)"
+  share_year: "năm dương lịch đầy đủ gần nhất (2025)"
+  share_definition: "(WND+SUN)/tổng sản lượng mọi fueltype dương, cả năm"
+  min_regions_share: 5
+  min_share: 0.05
+  full_year: "năm có >=98% giờ đủ (D,WND,SUN) ở mọi vùng đạt ngưỡng tỷ trọng 5%"
+  min_full_years: 3
+  consistency: "so sánh = vùng x cặp năm liên tiếp (năm đầy đủ) x mùa x chỉ số; dấu thay đổi mean-profile vs median-profile"
+  min_consistency: 0.80
+
+Q2:
+  error: "e = DF - D; APE = |e|/D (D>0)"
+  temp_groups: "theo từng vùng: <=P10 lạnh, (P10,P90) giữa, >=P90 nóng (nhiệt độ trọng số dân số)"
+  ren_groups: "theo từng vùng: tam phân vị (WND+SUN)/tổng phát điện"
+  comparisons: "mỗi vùng: lạnh-vs-giữa, nóng-vs-giữa, cao-vs-thấp, vừa-vs-thấp; dấu khác biệt theo mean APE và median APE"
+  regression: "APE ~ cold + hot + ren_share + C(giờ địa phương) + C(tháng), OLS từng vùng, SE Newey-West lag=24"
+  min_coverage: 0.98               # gộp mọi vùng, giờ có cả D và DF / giờ kỳ vọng
+  min_regions: 5                   # vùng có coverage riêng >=98%
+  min_consistency: 0.80
+  requires_C2_forecast_meaning: true
+  forecast_meaning_rule: >
+    "Xác nhận" khi: (a) C2 đủ 72 lần chạy với >=95% thành công; (b) metadata/dữ liệu chỉ có 1 giá trị DF cho mỗi
+    (respondent, period), không có facet thời điểm phát hành => lịch sử API là MỘT phiên bản; và (c) DF không bị sửa
+    >1% ở >5% khóa sau lần xuất hiện đầu (tức giá trị lưu là bản day-ahead cố định, không bị ghi đè).
+    Thiếu (a) => CHƯA XÁC ĐỊNH; (c) không đạt => KHÔNG xác nhận.
+
+Q3:
+  hours: "giờ địa phương 16 và 20 cùng ngày địa phương; Δ = gen(20) - gen(16) theo fueltype"
+  region_ok: "phủ fueltype >=95% giờ (như C1) VÀ tỷ trọng OTH+UNK (nếu có) <=10% tổng sản lượng dương toàn kỳ"
+  min_regions: 5
+
+Q4:
+  stress: "1% giờ có D cao nhất mỗi vùng (2023-01-01..D-3), không gồm US48"
+  net_import: "-TI"
+  main_partner: "đối tác có trung vị nhập (−value của fromba=vùng) lớn nhất trong giờ căng thẳng"
+  coverage: "gộp: tổng giờ có dữ liệu / tổng giờ kỳ vọng trên mọi cặp (A thuộc vùng khóa) xuất hiện trong dữ liệu"
+  min_coverage: 0.95
+  symmetry: "|v_AB + v_BA| / max(|v_AB|,|v_BA|) <= 5% (cả hai 0 => khớp), giờ có cả hai chiều, gộp mọi cặp"
+  min_symmetry_share: 0.90
+
+Q5:
+  series: D
+  window: "90 ngày kết thúc D-3 23:00 UTC"
+  baseline: "median & MAD của cùng giờ địa phương, cùng thứ địa phương, 8 tuần liền trước (chỉ quá khứ), MADn = 1.4826*MAD"
+  min_points: 4
+  flag: "|x - median| > 3*MADn; MADn=0 => không đánh giá (đếm riêng)"
+  max_flag_share: 0.05
+
+C5:
+  hourly_update_max_s: 300
+  daily_update_max_s: 1800
+  dashboard_max_bytes: 5368709120
+  storage_hard_stop_bytes: 10737418240
+  hourly_update_definition: "thời gian 1 lần chạy snapshot (fetch 72h mọi route + ghi)"
+  daily_update_definition: "tải lại 7 ngày gần nhất mọi route + thời tiết 7 ngày + tính lại toàn bộ bảng mart"

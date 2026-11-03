@@ -1,0 +1,45 @@
+# KHÓA TRƯỚC KHI XEM KẾT QUẢ — locked 2026-11-03 (UTC), trước khi tải dữ liệu lịch sử.
+# Mọi quy tắc chỉ GẮN CỜ, không sửa/xóa/nội suy giá trị.
+# "Giờ có đủ dữ liệu" = mọi đại lượng cần cho quy tắc đều có giá trị không null.
+
+rules:
+  R1:
+    desc: "Nhu cầu (D) <= 0"
+    flag: "D <= 0"
+  R2:
+    desc: "Nhu cầu lệch hơn 3 lần so với trung vị cùng giờ địa phương, cùng thứ địa phương trong 8 tuần trước"
+    baseline: "median của D tại cùng (giờ địa phương, thứ địa phương) trong 8 tuần liền trước, chỉ dữ liệu trước thời điểm đánh giá"
+    min_points: 4          # cần >=4/8 điểm baseline, nếu không => không đánh giá được
+    flag: "D > 3*median OR D < median/3 (D<=0 cũng tính cờ)"
+  R3:
+    desc: "Tổng phát điện theo nguồn lệch hơn 5% so với phát điện ròng (NG)"
+    flag: "|sum(fuel) - NG| / |NG| > 0.05"
+    requires: "NG không null và có ít nhất 1 giá trị nguồn; NG != 0"
+    note: "sum(fuel) = tổng mọi fueltype trả về cho vùng-giờ đó (gồm cả giá trị âm như pumped storage/battery)"
+  R4:
+    desc: "Nhu cầu lệch hơn 10% so với NG - TI (TI dương = xuất ròng, quy ước EIA-930)"
+    flag: "|D - (NG - TI)| / |D| > 0.10"
+    requires: "D, NG, TI không null; D != 0"
+  R5:
+    desc: "Tổng các vùng lệch hơn 5% so với US48, chỉ áp dụng khi cùng phạm vi"
+    scope_rule: >
+      7 vùng đã khóa KHÔNG phủ toàn bộ US48 => không cùng phạm vi => R5 không áp dụng cho tập vùng đã khóa.
+      Kiểm tra phụ (thông tin, không thuộc tiêu chí PASS): dùng 13 vùng tổng hợp EIA
+      (CAL, CAR, CENT, FLA, MIDA, MIDW, NE, NY, NW, SE, SW, TEN, TEX) — đây là phân vùng đầy đủ của US48 theo EIA.
+      Chỉ chạy nếu cả 13 mã tồn tại trong metadata; đại lượng D.
+    flag: "|sum13(D) - D_US48| / |D_US48| > 0.05, chỉ giờ có đủ 13 vùng + US48"
+
+pass_criteria:
+  R1_R2_max_flag_share: 0.02     # mỗi quy tắc, tính trên mỗi vùng
+  R3_min_pass_share: 0.90        # trên giờ có đủ dữ liệu, mỗi vùng
+  R4_min_pass_share: 0.90        # trên giờ có đủ dữ liệu, mỗi vùng
+  manual_min_valid_share: 0.70
+
+review_sample:
+  seed: 2026
+  n: 40
+  max_per_region_month: 2
+  rules_sampled: [R1, R2, R3, R4]
+  method: "xáo trộn toàn bộ cờ R1-R4 bằng numpy default_rng(2026), duyệt tuần tự, nhận nếu vùng-tháng chưa đủ 2"
+  window: "72 giờ quanh điểm: từ t-36h đến t+35h (UTC), giá trị thô của đại lượng chính của quy tắc"
+

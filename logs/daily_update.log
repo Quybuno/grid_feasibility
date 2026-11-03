@@ -1,0 +1,1 @@
+2026-11-03T16:51:56+00:00 {"window": ["2026-10-25T00", "2026-10-31T23"], "rows": {"region": 5360, "fuel": 12720, "agg13": 2184, "ic_fromba": 7527, "ic_toba": 6265}, "requests": 11, "weather_status": 200, "t_eia_s": 16.8, "t_weather_s": 1.6, "t_build_s": 513.2, "t_analyze_s": 94.4, "total_s": 626.0}

@@ -1,0 +1,59 @@
+name: grid-snapshot
+
+on:
+  schedule:
+    - cron: "7 * * * *"   # phút 7 mỗi giờ, theo UTC
+  workflow_dispatch:       # cho phép bấm chạy tay
+
+permissions:
+  contents: write
+
+concurrency:
+  group: grid-snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Lấy code
+        uses: actions/checkout@v4
+
+      - name: Lấy branch dữ liệu
+        uses: actions/checkout@v4
+        with:
+          ref: snapshots
+          path: store
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Cài thư viện
+        run: |
+          if [ -f grid_feasibility/requirements.txt ]; then
+            pip install -r grid_feasibility/requirements.txt
+          else
+            pip install -r requirements.txt
+          fi
+
+      - name: Thu snapshot
+        env:
+          EIA_API_KEY: ${{ secrets.EIA_API_KEY }}
+        run: |
+          if [ -f grid_feasibility/collect_snapshot.py ]; then
+            python grid_feasibility/collect_snapshot.py --out store/snapshots
+          else
+            python collect_snapshot.py --out store/snapshots
+          fi
+
+      - name: Lưu vào branch snapshots
+        working-directory: store
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add snapshots
+          git diff --staged --quiet || git commit -m "snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+          git push
+
