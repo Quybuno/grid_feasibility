@@ -1,0 +1,42 @@
+{
+  "run_id": "20261108T10",
+  "fetched_at": "2026-11-08T10:08:17+00:00",
+  "window_start": "2026-11-05T10",
+  "success": true,
+  "error": null,
+  "duration_s": 4.04,
+  "rows": {
+    "region-data": 1849,
+    "fuel-type-data": 3312,
+    "interchange-data": 985
+  },
+  "requests": [
+    {
+      "route": "region-data",
+      "page": 0,
+      "status": 200,
+      "elapsed_s": 1.601,
+      "headers": {},
+      "rows": 1849,
+      "total": 1849
+    },
+    {
+      "route": "fuel-type-data",
+      "page": 0,
+      "status": 200,
+      "elapsed_s": 1.031,
+      "headers": {},
+      "rows": 3312,
+      "total": 3312
+    },
+    {
+      "route": "interchange-data",
+      "page": 0,
+      "status": 200,
+      "elapsed_s": 1.299,
+      "headers": {},
+      "rows": 985,
+      "total": 985
+    }
+  ]
+}
